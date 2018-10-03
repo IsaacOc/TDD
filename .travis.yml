@@ -1,64 +1,14 @@
-  language: python
-  python:
-    #- "3.5"
-    #- "3.5-dev"  # 3.5 development branch
-    #- "3.6"
-    #- "3.6-dev"  # 3.6 development branch
-    - "3.7-dev"  # 3.7 development branch
+language: python
+python: 
+  - "3.6"
+  
+install: 
+  - "pip install -r requirements.txt"
+  - "pip install coveralls"
 
-  # To access the packages inside the virtualenv,
-  # you will need to specify that it should be created with the --system-site-packages option. 
-  virtualenv:
-  system_site_packages: true
-
-  # command to install dependencies
-  install:
-    - pip install -r requirements.txt
-    #- pip install --user -r requirements.txt
-  # command to run tests
-  #script:
-    #- pytest
-
-
-    # Cache gems
-cache:
-  bundler: true
-  directories:
-    - node_modules
-
-addons:
-  chrome: stable
-  #firefox: latest
-
-env:
-  global:
-    CC_TEST_REPORTER_ID=ABC123
-
-before_install:
-  - nvm install                         # Install node version from .nvmrc
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  #- export DISPLAY=:99.0                # Display number for xvfb (for headless browser testing)
-  #- sh -e /etc/init.d/xvfb start        # Start xvfb (for headless browser testing)
-
-install:
-  - bundle install --without production --path=${BUNDLE_PATH:-vendor/bundle}  # Install ruby gems, excluding production only gems such as unicorn (already present by default in Travis)
-  - npm install                         # Install npm dependencies
-  #- npm install karma-firefox-launcher codeclimate-test-reporter
-
-# Setup the database
-before_script: bundle exec rake db:create db:migrate
-
-# Run the test suites
-script:
-  - bundle exec rubocop -DESP           # Backend linting
-  - bundle exec rake                    # Backend specs
-  #- npm test -- --browsers Firefox      # Frontend specs
-  - npm test                            # Frontend linting & specs
-
-# Pipe the coverage data to Code Climate
-after_script:
-  - ./cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.backend.json coverage/backend/.resultset.json # Format backend coverage
-  - ./cc-test-reporter format-coverage -t lcov -o coverage/codeclimate.frontend.json coverage/frontend/lcov.info  # Format frontend coverage
-  - ./cc-test-reporter sum-coverage coverage/codeclimate.*.json -p 2                  # Sum both coverage parts into coverage/codeclimate.json
-  - if [[ "$TRAVIS_TEST_RESULT" == 0 ]]; then ./cc-test-reporter upload-coverage; fi  # Upload coverage/codeclimate.json
+script: 
+  - "nosetests --with-coverage --cover-package=api"
+  - "coverage report"
+after_success: 
+  - coveralls
+  - codeclimate-test-reporter
