@@ -7,7 +7,7 @@ install:
   - "pip install coveralls"
 
 script: 
-  - "nosetests --with-coverage --cover-test"
+  - "nosetests --with-coverage --cover-test "
   - "coverage report"
 after_success: 
   - coveralls
