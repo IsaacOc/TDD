@@ -7,3 +7,5 @@ Adding TDD to OOP assignment by Ben
 [![Maintainability](https://api.codeclimate.com/v1/badges/6c35c2d043ed8dd16eb0/maintainability)](https://codeclimate.com/github/IsaacOc/TDD/maintainability)
 
 [![Test Coverage](https://api.codeclimate.com/v1/badges/6c35c2d043ed8dd16eb0/test_coverage)](https://codeclimate.com/github/IsaacOc/TDD/test_coverage)
+
+[![Coverage Status](https://coveralls.io/repos/github/IsaacOc/TDD/badge.svg?branch=master)](https://coveralls.io/github/IsaacOc/TDD?branch=master)
